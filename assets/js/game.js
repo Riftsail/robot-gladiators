@@ -6,14 +6,18 @@ var playerAttack = 10;
 var playerMoney = 10;
 
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-var enemyHealth = 50;
+var enemyHealth =randomNumber(40, 60);
 var enemyAttack = 12;
 
-console.log(enemyNames);
-console.log(enemyNames.length);
-console.log(enemyNames[0]);
-console.log(enemyNames[3]);
 
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+  
+  return value;
+};
+
+// fight function (now with parameter for enemy's object holding name, health, and attack values)
 var fight = function(enemyName) {
   while (playerHealth > 0 && enemyHealth > 0) {
     // ask player if they'd like to fight or run
@@ -34,8 +38,12 @@ var fight = function(enemyName) {
       }
     }
 
+     // generate random damage value based on player's attack power
+     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+
+
     // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth = enemyHealth - playerAttack;
+    enemy.health = Math.max(0, enemy.health - damage);
     console.log(
       playerName + ' attacked ' + enemyName + '. ' + enemyName + ' now has ' + enemyHealth + ' health remaining.'
     );
@@ -45,7 +53,7 @@ var fight = function(enemyName) {
       window.alert(enemyName + ' has died!');
 
       // award player money for winning
-      playerMoney = playerMoney + 20;
+      playerMoney = Math.max(0, playerMoney - 10);
       // leave while() loop since enemy is dead
       break;
     } else {
@@ -53,7 +61,11 @@ var fight = function(enemyName) {
     }
 
     // remove players's health by subtracting the amount set in the enemyAttack variable
-    playerHealth = playerHealth - enemyAttack;
+    
+    var damage = randomNumber(enemy.attack - 3, enemy.attack);
+
+    playerInfo.health = Math.max(0, playerInfo.health - damage);
+    
     console.log(
       enemyName + ' attacked ' + playerName + '. ' + playerName + ' now has ' + playerHealth + ' health remaining.'
     );
@@ -144,8 +156,8 @@ var playAgainConfirm = window.confirm("Would you like to play again?");
 if (playAgainConfirm) {
   // restart the game
   startGame();
-} 
-else {
+
+} else {
   window.alert("Thank you for playing Robot Gladiators! Come back soon!");
 }
 
